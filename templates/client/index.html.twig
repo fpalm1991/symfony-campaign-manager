@@ -3,37 +3,42 @@
 {% block title %}Kunden{% endblock %}
 
 {% block body %}
-    
+
     <h1 class="mb-4">Kunden</h1>
 
     <table class="table mb-4">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Kunde</th>
-                <th>Website</th>
-                <th></th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Kunde</th>
+            <th>Website</th>
+            <th>Kampagnen</th>
+            <th></th>
+        </tr>
         </thead>
         <tbody>
-            {% for client in clients %}
+        {% for client in clients %}
             <tr>
                 <td>{{ client.id }}</td>
                 <td>{{ client.name }}</td>
                 <td>{{ client.domain }}</td>
+                
+                {% set numberCampaigns = client.clientCampaigns.count %}
+                <td>{{ numberCampaigns }} {{ numberCampaigns == 1 ? 'Kampagne' : 'Kampagnen' }}</td>
+
                 <td>
                     <a href="{{ path('app_client_show', {'id': client.id}) }}">Mehr</a>
                     <a href="{{ path('app_client_edit', {'id': client.id}) }}">Bearbeiten</a>
                 </td>
             </tr>
-            {% else %}
+        {% else %}
             <tr>
                 <td colspan="4">Keine erfassten Kunden.</td>
             </tr>
-            {% endfor %}
+        {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_client_new') }}">Neuer Kunde</a>
+    <a class="btn btn-primary" href="{{ path('app_client_new') }}">Neuer Kunde</a>
 
 {% endblock %}

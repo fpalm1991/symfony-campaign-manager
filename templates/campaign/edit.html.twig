@@ -6,10 +6,10 @@
 
     <h1 class="mb-4">Kampagne aktualisieren</h1>
 
-    {{ include('campaign/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('campaign/_form.html.twig', {'button_label': 'Aktualisieren'}) }}
 
-    <a href="{{ path('app_campaign_index') }}">Zurück</a>
+    <a class="btn btn-outline-primary" href="{{ path('app_campaign_index') }}">Zurück</a>
 
     {{ include('campaign/_delete_form.html.twig') }}
-    
+
 {% endblock %}
