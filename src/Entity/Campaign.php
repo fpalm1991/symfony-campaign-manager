@@ -28,11 +28,11 @@ class Campaign
     #[ORM\Column]
     private ?float $budget = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTime $start_date = null;
+    #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $start_date = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTime $end_date = null;
+    #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $end_date = null;
 
     #[ORM\ManyToOne(inversedBy: 'project_manager_campaigns')]
     private ?User $project_manager = null;
@@ -94,24 +94,24 @@ class Campaign
         return $this;
     }
 
-    public function getStartDate(): ?\DateTime
+    public function getStartDate(): ?\DateTimeImmutable
     {
         return $this->start_date;
     }
 
-    public function setStartDate(?\DateTime $start_date): static
+    public function setStartDate(?\DateTimeImmutable $start_date): static
     {
         $this->start_date = $start_date;
 
         return $this;
     }
 
-    public function getEndDate(): ?\DateTime
+    public function getEndDate(): ?\DateTimeImmutable
     {
         return $this->end_date;
     }
 
-    public function setEndDate(?\DateTime $end_date): static
+    public function setEndDate(?\DateTimeImmutable $end_date): static
     {
         $this->end_date = $end_date;
 
