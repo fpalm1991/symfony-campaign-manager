@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Campaign;
 use App\Entity\Client;
 use App\Entity\Platform;
+use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,11 +22,19 @@ class CampaignType extends AbstractType
             ->add('end_date')
             ->add('platform', EntityType::class, [
                 'class' => Platform::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
             ])
             ->add('client', EntityType::class, [
                 'class' => Client::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
+            ])
+            ->add('project_manager', EntityType::class, [
+                'class' => User::class,
+                'choice_label' => 'email',
+            ])
+            ->add('campaign_owner', EntityType::class, [
+                'class' => User::class,
+                'choice_label' => 'email',
             ])
         ;
     }

@@ -1,11 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Client{% endblock %}
+{% block title %}Kunde{% endblock %}
 
 {% block body %}
-    <h1>Client</h1>
+    
+    <h1 class="mb-4">Kunde {{ client.name }}</h1>
 
-    <table class="table">
+    <table class="table mb-4">
         <tbody>
             <tr>
                 <th>Id</th>
@@ -22,9 +23,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_client_index') }}">back to list</a>
-
-    <a href="{{ path('app_client_edit', {'id': client.id}) }}">edit</a>
+    <a href="{{ path('app_client_index') }}">Zurück</a>
+    <a href="{{ path('app_client_edit', {'id': client.id}) }}">Bearbeiten</a>
 
     {{ include('client/_delete_form.html.twig') }}
+
 {% endblock %}

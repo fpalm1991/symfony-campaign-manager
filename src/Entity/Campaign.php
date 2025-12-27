@@ -34,6 +34,13 @@ class Campaign
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTime $end_date = null;
 
+    #[ORM\ManyToOne(inversedBy: 'project_manager_campaigns')]
+    private ?User $project_manager = null;
+
+    #[ORM\ManyToOne(inversedBy: 'campaign_owner_campaigns')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $campaign_owner = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -107,6 +114,30 @@ class Campaign
     public function setEndDate(?\DateTime $end_date): static
     {
         $this->end_date = $end_date;
+
+        return $this;
+    }
+
+    public function getProjectManager(): ?User
+    {
+        return $this->project_manager;
+    }
+
+    public function setProjectManager(?User $project_manager): static
+    {
+        $this->project_manager = $project_manager;
+
+        return $this;
+    }
+
+    public function getCampaignOwner(): ?User
+    {
+        return $this->campaign_owner;
+    }
+
+    public function setCampaignOwner(?User $campaign_owner): static
+    {
+        $this->campaign_owner = $campaign_owner;
 
         return $this;
     }

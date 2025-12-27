@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -30,6 +32,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    /**
+     * @var Collection<int, Campaign>
+     */
+    #[ORM\OneToMany(targetEntity: Campaign::class, mappedBy: 'project_manager')]
+    private Collection $project_manager_campaigns;
+
+    /**
+     * @var Collection<int, Campaign>
+     */
+    #[ORM\OneToMany(targetEntity: Campaign::class, mappedBy: 'campaign_owner', orphanRemoval: true)]
+    private Collection $campaign_owner_campaigns;
+
+    public function __construct()
+    {
+        $this->project_manager_campaigns = new ArrayCollection();
+        $this->campaign_owner_campaigns = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -104,5 +124,69 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $data["\0".self::class."\0password"] = hash('crc32c', $this->password);
 
         return $data;
+    }
+
+    /**
+     * @return Collection<int, Campaign>
+     */
+    public function getProjectManagerCampaigns(): Collection
+    {
+        return $this->project_manager_campaigns;
+    }
+
+    public function addProjectManagerCampaign(Campaign $projectManagerCampaign): static
+    {
+        if (!$this->project_manager_campaigns->contains($projectManagerCampaign)) {
+            $this->project_manager_campaigns->add($projectManagerCampaign);
+            $projectManagerCampaign->setProjectManager($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProjectManagerCampaign(Campaign $projectManagerCampaign): static
+    {
+        if ($this->project_manager_campaigns->removeElement($projectManagerCampaign)) {
+            // set the owning side to null (unless already changed)
+            if ($projectManagerCampaign->getProjectManager() === $this) {
+                $projectManagerCampaign->setProjectManager(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Campaign>
+     */
+    public function getCampaignOwnerCampaigns(): Collection
+    {
+        return $this->campaign_owner_campaigns;
+    }
+
+    public function addCampaignOwnerCampaign(Campaign $campaignOwnerCampaign): static
+    {
+        if (!$this->campaign_owner_campaigns->contains($campaignOwnerCampaign)) {
+            $this->campaign_owner_campaigns->add($campaignOwnerCampaign);
+            $campaignOwnerCampaign->setCampaignOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCampaignOwnerCampaign(Campaign $campaignOwnerCampaign): static
+    {
+        if ($this->campaign_owner_campaigns->removeElement($campaignOwnerCampaign)) {
+            // set the owning side to null (unless already changed)
+            if ($campaignOwnerCampaign->getCampaignOwner() === $this) {
+                $campaignOwnerCampaign->setCampaignOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string {
+        return $this->email;
     }
 }

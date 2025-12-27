@@ -1,41 +1,43 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Campaign index{% endblock %}
+{% block title %}Kampagnen{% endblock %}
 
 {% block body %}
-    <h1>Campaign index</h1>
 
-    <table class="table">
+    <h1 class="mb-4">Kampagnen</h1>
+
+    <table class="table mb-4">
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Name</th>
+                <th>Kampagne</th>
                 <th>Budget</th>
-                <th>Start_date</th>
-                <th>End_date</th>
-                <th>actions</th>
+                <th>Startdatum</th>
+                <th>Enddatum</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
-        {% for campaign in campaigns %}
+            {% for campaign in campaigns %}
             <tr>
                 <td>{{ campaign.id }}</td>
                 <td>{{ campaign.name }}</td>
                 <td>{{ campaign.budget }}</td>
-                <td>{{ campaign.startDate ? campaign.startDate|date('Y-m-d') : '' }}</td>
-                <td>{{ campaign.endDate ? campaign.endDate|date('Y-m-d') : '' }}</td>
+                <td>{{ campaign.startDate ? campaign.startDate|date('d. F Y') : '' }}</td>
+                <td>{{ campaign.endDate ? campaign.endDate|date('d. F Y') : '' }}</td>
                 <td>
-                    <a href="{{ path('app_campaign_show', {'id': campaign.id}) }}">show</a>
-                    <a href="{{ path('app_campaign_edit', {'id': campaign.id}) }}">edit</a>
+                    <a href="{{ path('app_campaign_show', {'id': campaign.id}) }}">Mehr</a>
+                    <a href="{{ path('app_campaign_edit', {'id': campaign.id}) }}">Bearbeiten</a>
                 </td>
             </tr>
-        {% else %}
+            {% else %}
             <tr>
-                <td colspan="6">no records found</td>
+                <td colspan="6">Keine Kampagnen gefunden.</td>
             </tr>
-        {% endfor %}
+            {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_campaign_new') }}">Create new</a>
+    <a href="{{ path('app_campaign_new') }}">Neue Kampagne</a>
+
 {% endblock %}
