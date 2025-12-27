@@ -6,6 +6,7 @@ use App\Entity\Campaign;
 use App\Entity\Client;
 use App\Entity\Platform;
 use App\Entity\User;
+use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -31,12 +32,21 @@ class CampaignType extends AbstractType
             ->add('project_manager', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'email',
+                'query_builder' => function (UserRepository $er) {
+                    return $er->createQueryBuilder('u')
+                        ->where('u.roles LIKE :roles')
+                        ->setParameter('roles', '%"ROLE_PROJECT_MANAGER"%');
+                }
             ])
             ->add('campaign_owner', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'email',
-            ])
-        ;
+                'query_builder' => function (UserRepository $er) {
+                    return $er->createQueryBuilder('u')
+                        ->where('u.roles LIKE :roles')
+                        ->setParameter('roles', '%"ROLE_CAMPAIGN_OWNER"%');
+                }
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
