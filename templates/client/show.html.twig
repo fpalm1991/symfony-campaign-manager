@@ -6,7 +6,7 @@
 
     <h1 class="mb-4">Kunde {{ client.name }}</h1>
 
-    <table class="table mb-4">
+    <table class="table mb-5">
         <tbody>
         <tr>
             <th>Name</th>
@@ -21,34 +21,37 @@
 
     <h3 class="mb-4">Kampagnen {{ client.name }}</h3>
 
-    <table class="table mb-4">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Kampagne</th>
-            <th>Budget</th>
-            <th>Startdatum</th>
-            <th>Enddatum</th>
-        </tr>
-        </thead>
-        <tbody>
+    <div class="cards mb-5 row row-cols-1 row-cols-md-2 g-4">
+
         {% for campaign in client.clientCampaigns %}
-            <tr>
-                <td>{{ campaign.id }}</td>
-                <td>
-                    <a href="{{ path('app_campaign_show', {'id': campaign.id}) }}">{{ campaign.name }}</a>
-                </td>
-                <td>CHF {{ campaign.budget }}</td>
-                <td>{{ campaign.startDate ? campaign.startDate|date('d. F Y') : '' }}</td>
-                <td>{{ campaign.endDate ? campaign.endDate|date('d. F Y') : '' }}</td>
-            </tr>
+
+            <div class="col">
+
+                <div class="card">
+                    <div class="card-header">
+                        {{ campaign.name }}
+                    </div>
+                    <div class="card-body">
+
+                        <ul>
+                            <li>CHF {{ campaign.budget }}</li>
+                            <li>{{ campaign.startDate ? campaign.startDate|date('d. F Y') : '' }}</li>
+                            <li>{{ campaign.endDate ? campaign.endDate|date('d. F Y') : '' }}</li>
+                        </ul>
+
+                        <a href="{{ path('app_campaign_show', {'id': campaign.id}) }}">Zur Kampagne</a>
+                    </div>
+                </div>
+
+            </div>
+
         {% else %}
             <tr>
                 <td colspan="6">Keine Kampagnen gefunden.</td>
             </tr>
         {% endfor %}
-        </tbody>
-    </table>
+
+    </div>
 
     <div class="btn-group">
         <a class="btn btn-outline-primary" href="{{ path('app_client_index') }}">Zurück</a>
