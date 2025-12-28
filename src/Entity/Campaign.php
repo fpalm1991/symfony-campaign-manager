@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\CampaignLifecycle;
 use App\Repository\CampaignRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -40,6 +41,14 @@ class Campaign
     #[ORM\ManyToOne(inversedBy: 'campaign_owner_campaigns')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $campaign_owner = null;
+
+    #[ORM\Column(enumType: CampaignLifecycle::class)]
+    private CampaignLifecycle $lifecycle;
+
+    public function __construct()
+    {
+        $this->setLifecycle(CampaignLifecycle::ACTIVE);
+    }
 
     public function getId(): ?int
     {
@@ -138,6 +147,18 @@ class Campaign
     public function setCampaignOwner(?User $campaign_owner): static
     {
         $this->campaign_owner = $campaign_owner;
+
+        return $this;
+    }
+
+    public function getLifecycle(): CampaignLifecycle
+    {
+        return $this->lifecycle;
+    }
+
+    public function setLifecycle(CampaignLifecycle $lifecycle): static
+    {
+        $this->lifecycle = $lifecycle;
 
         return $this;
     }

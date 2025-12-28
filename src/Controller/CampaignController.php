@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Campaign;
+use App\Enum\CampaignLifecycle;
 use App\Form\CampaignType;
 use App\Repository\CampaignRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -30,6 +32,8 @@ final class CampaignController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $campaign->setLifecycle(CampaignLifecycle::ACTIVE);
+
             $entityManager->persist($campaign);
             $entityManager->flush();
 
@@ -66,6 +70,31 @@ final class CampaignController extends AbstractController
             'campaign' => $campaign,
             'form' => $form,
         ]);
+    }
+
+    #[Route('/{id}/lifecycle', name: 'app_campaign_toggle_lifecycle')]
+    public function toggleCampaignLifecycle(
+        Request                $request,
+        Campaign               $campaign,
+        EntityManagerInterface $entityManager,
+    ): JsonResponse
+    {
+        if (!$this->isCsrfTokenValid('lifecycle' . $campaign->getId(), $request->getPayload()->getString('_token'))) {
+            return $this->json(['ok' => false, 'error' => 'Invalid CSRF Token.'], Response::HTTP_FORBIDDEN);
+        }
+
+        // 1 => archive current campaign
+        // 0 => activate current campaign
+        $archiveCampaign = (int)$request->request->get('archive_campaign') === 1;
+        $campaign->setLifecycle($archiveCampaign ? CampaignLifecycle::ARCHIVED : CampaignLifecycle::ACTIVE);
+        $entityManager->flush();
+
+        return $this->json(
+            [
+                'ok' => true,
+                'lifecycle' => $campaign->getLifecycle()->value,
+            ],
+            Response::HTTP_OK);
     }
 
     #[Route('/{id}', name: 'app_campaign_delete', methods: ['POST'])]

@@ -4,7 +4,34 @@
 
 {% block body %}
 
-    <h1 class="mb-4">Kampagne {{ campaign.name }}</h1>
+    <div class="mb-4 d-flex justify-content-between">
+        <div>
+            <h1 class="mb-2">Kampagne {{ campaign.name }}</h1>
+            <span
+                id="campaign-lifecycle-badge"
+                class="badge {{ campaign.lifecycle.value == 'active' ? 'bg-success' : 'bg-secondary' }}">{{ campaign.lifecycle.value|capitalize }}</span>
+        </div>
+
+        <form
+            action="{{ path('app_campaign_toggle_lifecycle', {id: campaign.id}) }}"
+            method="post"
+            id="form-campaign-lifecycle"
+        >
+            <input type="hidden" name="_token" value="{{ csrf_token('lifecycle' ~ campaign.id) }}">
+            <div class="form-check form-switch">
+                <input
+                    class="form-check-input"
+                    type="checkbox"
+                    role="switch"
+                    value="{{ campaign.lifecycle.value == 'active' ? '1' : '0' }}"
+                    id="toggle-switch-lifecycle" {{ campaign.lifecycle.value == 'active' ? 'checked' : '' }}>
+                <label class="form-check-label" for="toggle-switch-lifecycle" id="toggle-switch-lifecycle-lable">
+                    {{ campaign.lifecycle.value == 'active' ? 'Archivieren' : 'Aktivieren' }}
+                </label>
+            </div>
+        </form>
+
+    </div>
 
     <table class="table mb-4">
         <tbody>
