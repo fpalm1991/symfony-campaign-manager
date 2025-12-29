@@ -1,5 +1,9 @@
-.table-campaigns .td__platform-icon {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+@media (min-width: 992px) {
+
+    .table-campaigns .td__platform-icon {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
 }
