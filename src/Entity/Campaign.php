@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Enum\CampaignLifecycle;
+use App\Enum\CampaignStatus;
 use App\Repository\CampaignRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -161,5 +162,32 @@ class Campaign
         $this->lifecycle = $lifecycle;
 
         return $this;
+    }
+
+    public function getStatus(): CampaignStatus
+    {
+        $today = new \DateTimeImmutable("today");
+        $soon = $today->modify("+7 day");
+
+        $start = $this->getStartDate();
+        $end = $this->getEndDate();
+
+        if ($start === null || $end === null) {
+            return CampaignStatus::DRAFT;
+        }
+
+        if ($today <= $end && $end <= $soon) {
+            return CampaignStatus::ENDING_SOON;
+        }
+
+        if ($start <= $today && $today <= $end) {
+            return CampaignStatus::RUNNING;
+        }
+
+        if ($today < $start) {
+            return CampaignStatus::PLANNED;
+        }
+
+        return CampaignStatus::ENDED;
     }
 }

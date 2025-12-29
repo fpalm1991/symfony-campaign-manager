@@ -10,6 +10,8 @@
             <span
                 id="campaign-lifecycle-badge"
                 class="badge {{ campaign.lifecycle.value == 'active' ? 'bg-success' : 'bg-secondary' }}">{{ campaign.lifecycle.value|capitalize }}</span>
+            <span
+                class="badge {{ campaign.status.badgeClass }}">{{ campaign.status.value }}</span>
         </div>
 
         <form
