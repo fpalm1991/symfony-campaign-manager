@@ -6,40 +6,6 @@
 
     <h3 class="mb-4">Kampagnen, die diesen Monat enden</h3>
 
-    <table class="table mb-4">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Kampagne</th>
-            <th>Plattform</th>
-            <th>Kunde</th>
-            <th>Budget</th>
-            <th>Startdatum</th>
-            <th>Enddatum</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for campaign in campaignsEndingThisMonth %}
-            <tr>
-                <td>{{ campaign.id }}</td>
-                <td>{{ campaign.name }}</td>
-                <td>{{ campaign.platform }}</td>
-                <td>{{ campaign.client }}</td>
-                <td>CHF {{ campaign.budget }}</td>
-                <td>{{ campaign.startDate ? campaign.startDate|date('d. F Y') : '' }}</td>
-                <td>{{ campaign.endDate ? campaign.endDate|date('d. F Y') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_campaign_show', {'id': campaign.id}) }}">Mehr</a>
-                    <a href="{{ path('app_campaign_edit', {'id': campaign.id}) }}">Bearbeiten</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">Keine Kampagnen gefunden.</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {{ include('components/table/campaigns.html.twig', { 'campaigns': campaignsEndingThisMonth }) }}
 
 {% endblock %}

@@ -24,6 +24,9 @@ class Platform
     #[ORM\OneToMany(targetEntity: Campaign::class, mappedBy: 'platform', orphanRemoval: true)]
     private Collection $platform_campaigns;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $code = null;
+
     public function __construct()
     {
         $this->platform_campaigns = new ArrayCollection();
@@ -79,5 +82,26 @@ class Platform
     public function __toString(): string
     {
         return $this->name;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(?string $code): static
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    public function getIconPath(): ?string
+    {
+        if ($this->code === null) {
+            return null;
+        }
+        
+        return sprintf('assets/icons/platforms/%s.svg', $this->getCode());
     }
 }
