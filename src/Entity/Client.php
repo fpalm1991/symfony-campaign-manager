@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\CampaignLifecycle;
 use App\Repository\ClientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -89,6 +90,26 @@ class Client
         }
 
         return $this;
+    }
+
+    public function getNumberActiveCampaigns(): int
+    {
+        return $this->client_campaigns
+            ->filter(fn(Campaign $c) => $c->getLifecycle() === CampaignLifecycle::ACTIVE)
+            ->count();
+    }
+
+    public function getTotalBudget(): float
+    {
+        return $this->client_campaigns
+            ->reduce(fn(float $acc, Campaign $c): float => $acc + ($c->getBudget() ?? 0), 0.0);
+    }
+
+    public function getActiveBudget(): float
+    {
+        return $this->client_campaigns
+            ->filter(fn(Campaign $c) => $c->getLifecycle() === CampaignLifecycle::ACTIVE)
+            ->reduce(fn(float $acc, Campaign $c): float => $acc + ($c->getBudget() ?? 0), 0.0);
     }
 
     public function __toString(): string

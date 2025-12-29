@@ -9,12 +9,28 @@
     <table class="table mb-5">
         <tbody>
         <tr>
-            <th>Name</th>
+            <th>Name Kunde</th>
             <td>{{ client.name }}</td>
         </tr>
         <tr>
-            <th>Domain</th>
+            <th>Website</th>
             <td>{{ client.domain }}</td>
+        </tr>
+        <tr>
+            <th>Anzahl aller erfassten Kampagnen</th>
+            <td>{{ client.clientCampaigns.count }}</td>
+        </tr>
+        <tr>
+            <th>Anzahl aktive Kampagnen</th>
+            <td>{{ client.numberActiveCampaigns }}</td>
+        </tr>
+        <tr>
+            <th>Budget aller erfassten Kampagnen</th>
+            <td>CHF {{ client.totalBudget }}</td>
+        </tr>
+        <tr>
+            <th>Budget aktive Kampagnen</th>
+            <td>CHF {{ client.activeBudget }}</td>
         </tr>
         </tbody>
     </table>
