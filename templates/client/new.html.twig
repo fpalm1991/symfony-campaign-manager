@@ -6,7 +6,7 @@
 
     <h1 class="mb-4">Neuen Kunden erfassen</h1>
 
-    {{ include('client/_form.html.twig') }}
+    {{ include('client/_form.html.twig', { 'button_label': 'Kunde erfassen' }) }}
 
     <a href="{{ path('app_client_index') }}">Zurück</a>
 

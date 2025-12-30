@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Campaign;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,6 +15,39 @@ class CampaignRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Campaign::class);
+    }
+
+    public function findAllActiveCampaigns(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.lifecycle = :lifecycle')
+            ->setParameter('lifecycle', 'active')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllArchivedCampaigns(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.lifecycle = :lifecycle')
+            ->setParameter('lifecycle', 'archived')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllMyActiveCampaigns(User $user): array
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        return $qb
+            ->andWhere(
+                $qb->expr()->orX('c.project_manager = :user', 'c.campaign_owner = :user')
+            )
+            ->andWhere('c.lifecycle = :lifecycle')
+            ->setParameter('user', $user)
+            ->setParameter('lifecycle', 'active')
+            ->getQuery()
+            ->getResult();
     }
 
     public function campaignsEndingThisMonth(): array

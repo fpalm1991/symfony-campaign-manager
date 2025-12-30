@@ -1,18 +1,19 @@
 <div class="table-responsive mb-5">
 
     <table class="table table-campaigns">
-        
+
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Kampagne</th>
-                <th>Plattform</th>
-                <th>Kunde</th>
-                <th>Budget</th>
-                <th>Startdatum</th>
-                <th>Enddatum</th>
-                <th></th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Kampagne</th>
+            <th>Status</th>
+            <th>Plattform</th>
+            <th>Kunde</th>
+            <th>Budget</th>
+            <th>Startdatum</th>
+            <th>Enddatum</th>
+            <th></th>
+        </tr>
         </thead>
 
         <tbody>
@@ -20,16 +21,23 @@
             <tr>
                 <td>{{ campaign.id }}</td>
                 <td>{{ campaign.name }}</td>
+                <td class="td__campaign-status-icon">
+                    <div class="td-inner">
+                        <span class="campaign-status-icon {{ campaign.status.badgeClass }}"></span>
+                    </div>
+                </td>
                 <td class="td__platform-icon">
-                    <img
-                        class="d-none d-lg-inline"
-                        src="{{ asset(campaign.platform.iconPath) }}"
-                        alt="{{ campaign.platform.name }}"
-                        width="16"
-                        height="16"
-                        loading="lazy"
-                    >
-                    {{ campaign.platform }}
+                    <div class="td-inner">
+                        <img
+                            class="d-none d-lg-inline"
+                            src="{{ asset(campaign.platform.iconPath) }}"
+                            alt="{{ campaign.platform.name }}"
+                            width="16"
+                            height="16"
+                            loading="lazy"
+                        >
+                        {{ campaign.platform }}
+                    </div>
                 </td>
                 <td>{{ campaign.client }}</td>
                 <td>CHF {{ campaign.budget }}</td>
@@ -46,7 +54,7 @@
             </tr>
         {% endfor %}
         </tbody>
-        
+
     </table>
-    
+
 </div>

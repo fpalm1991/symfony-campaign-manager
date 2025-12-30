@@ -6,10 +6,10 @@
 
     <div class="mb-4 d-flex justify-content-between">
         <div>
-            <h1 class="mb-2">Kampagne {{ campaign.name }}</h1>
+            <h1 class="mb-3">Kampagne {{ campaign.name }}</h1>
             <span
                 id="campaign-lifecycle-badge"
-                class="badge {{ campaign.lifecycle.value == 'active' ? 'bg-success' : 'bg-secondary' }}">{{ campaign.lifecycle.value|capitalize }}</span>
+                class="badge {{ campaign.lifecycle.badgeClass }}">{{ campaign.lifecycle.asLabel|capitalize }}</span>
             <span
                 class="badge {{ campaign.status.badgeClass }}">{{ campaign.status.value }}</span>
         </div>
@@ -25,10 +25,10 @@
                     class="form-check-input"
                     type="checkbox"
                     role="switch"
-                    value="{{ campaign.lifecycle.value == 'active' ? '1' : '0' }}"
-                    id="toggle-switch-lifecycle" {{ campaign.lifecycle.value == 'active' ? 'checked' : '' }}>
+                    value="{{ campaign.lifecycle.asValue }}"
+                    id="toggle-switch-lifecycle" {{ campaign.lifecycle.asValue == '1' ? 'checked' : '' }}>
                 <label class="form-check-label" for="toggle-switch-lifecycle" id="toggle-switch-lifecycle-lable">
-                    {{ campaign.lifecycle.value == 'active' ? 'Archivieren' : 'Aktivieren' }}
+                    {{ campaign.lifecycle.asValue == '1' ? 'Archivieren' : 'Aktivieren' }}
                 </label>
             </div>
         </form>

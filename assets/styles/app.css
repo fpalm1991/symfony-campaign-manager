@@ -1,9 +1,22 @@
 @media (min-width: 992px) {
 
-    .table-campaigns .td__platform-icon {
+    .table-campaigns .td__platform-icon > .td-inner {
         display: flex;
         align-items: center;
         gap: 10px;
     }
 
+    .table-campaigns .td__campaign-status-icon > .td-inner {
+        display: grid;
+        place-items: center;
+    }
+    
+}
+
+.campaign-status-icon {
+    display: inline-block;
+    margin-top: 4px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
 }

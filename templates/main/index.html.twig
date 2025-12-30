@@ -8,4 +8,8 @@
 
     {{ include('components/table/campaigns.html.twig', { 'campaigns': campaignsEndingThisMonth }) }}
 
+    <h3 class="mb-4">Meine aktiven Kampagnen</h3>
+
+    {{ include('components/table/campaigns.html.twig', { 'campaigns': myActiveCampaigns }) }}
+
 {% endblock %}

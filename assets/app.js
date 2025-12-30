@@ -28,14 +28,14 @@ const updateCampaignLifecycle = (form, toggle, toggleLabel, badge) => {
 
             // Update frontend
             if (data.lifecycle === 'archived') {
-                badge.textContent = 'Archived'
+                badge.textContent = 'Archiviert'
                 badge.classList = ''
                 badge.classList = 'badge bg-secondary'
 
                 toggle.value = '0'
                 toggleLabel.textContent = 'Aktivieren'
             } else {
-                badge.textContent = 'Active'
+                badge.textContent = 'Aktiviert'
                 badge.classList = ''
                 badge.classList = 'badge bg-success'
 

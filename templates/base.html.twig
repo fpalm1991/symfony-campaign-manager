@@ -47,6 +47,13 @@
                     </li>
                     <li class="nav-item">
                         <a
+                            class="nav-link {{ currentRoute == 'app_campaigns_archived' ? 'active' : '' }}"
+                            href="{{ path('app_campaigns_archived') }}"
+                            {% if currentRoute == 'app_campaigns_archived' %}aria-current="page"{% endif %}
+                        >Archivierte Kampagnen</a>
+                    </li>
+                    <li class="nav-item">
+                        <a
                             class="nav-link {{ currentRoute == 'app_client_index' ? 'active' : '' }}"
                             href="{{ path('app_client_index') }}"
                             {% if currentRoute == 'app_client_index' %}aria-current="page"{% endif %}

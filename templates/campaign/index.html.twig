@@ -4,7 +4,7 @@
 
 {% block body %}
 
-    <h1 class="mb-4">Kampagnen</h1>
+    <h1 class="mb-4">{{ heading|default('Kampagnen') }}</h1>
 
     {{ include('components/table/campaigns.html.twig', { 'campaigns': campaigns }) }}
 

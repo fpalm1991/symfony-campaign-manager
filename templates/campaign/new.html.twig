@@ -6,7 +6,7 @@
 
     <h1 class="mb-4">Neue Kampagne erstellen</h1>
 
-    {{ include('campaign/_form.html.twig') }}
+    {{ include('campaign/_form.html.twig', { 'button_label': 'Kampagne erstellen' }) }}
 
     <a href="{{ path('app_campaign_index') }}">Zurück</a>
 

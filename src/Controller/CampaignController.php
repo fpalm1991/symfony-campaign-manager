@@ -20,7 +20,17 @@ final class CampaignController extends AbstractController
     public function index(CampaignRepository $campaignRepository): Response
     {
         return $this->render('campaign/index.html.twig', [
-            'campaigns' => $campaignRepository->findAll(),
+            'heading' => 'Aktive Kampagnen',
+            'campaigns' => $campaignRepository->findAllActiveCampaigns(),
+        ]);
+    }
+
+    #[Route('/archived', name: 'app_campaigns_archived', methods: ['GET'])]
+    public function archived(CampaignRepository $campaignRepository): Response
+    {
+        return $this->render('campaign/index.html.twig', [
+            'heading' => 'Archivierte Kampagnen',
+            'campaigns' => $campaignRepository->findAllArchivedCampaigns(),
         ]);
     }
 

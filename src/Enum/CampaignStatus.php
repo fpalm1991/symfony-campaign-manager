@@ -17,7 +17,7 @@ enum CampaignStatus: string
             self::PLANNED => 'bg-info',
             self::RUNNING => 'bg-success',
             self::ENDING_SOON => 'bg-warning text-dark',
-            self::ENDED => 'bg-dark',
+            self::ENDED => 'bg-danger',
         };
     }
 }
