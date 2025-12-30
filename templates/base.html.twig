@@ -18,58 +18,60 @@
 <body data-bs-theme="dark">
 <header class="mb-5 bg-body-tertiary">
 
-    <nav class="navbar navbar-expand-lg container">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{{ path('app_main_index') }}">Campaign Manager</a>
+    {% if is_granted("ROLE_USER") %}
+        <nav class="navbar navbar-expand-lg container">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{ path('app_main_index') }}">Campaign Manager</a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-            {% set currentRoute = app.request.attributes.get('_route') %}
+                {% set currentRoute = app.request.attributes.get('_route') %}
 
-            <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a
-                            class="nav-link {{ currentRoute == 'app_main_index' ? 'active' : '' }}"
-                            href="{{ path('app_main_index') }}"
-                            {% if currentRoute == 'app_main_index' %}aria-current="page"{% endif %}
-                        >Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a
-                            class="nav-link {{ currentRoute == 'app_campaign_index' ? 'active' : '' }}"
-                            href="{{ path('app_campaign_index') }}"
-                            {% if currentRoute == 'app_campaign_index' %}aria-current="page"{% endif %}
-                        >Kampagnen</a>
-                    </li>
-                    <li class="nav-item">
-                        <a
-                            class="nav-link {{ currentRoute == 'app_campaigns_archived' ? 'active' : '' }}"
-                            href="{{ path('app_campaigns_archived') }}"
-                            {% if currentRoute == 'app_campaigns_archived' %}aria-current="page"{% endif %}
-                        >Archivierte Kampagnen</a>
-                    </li>
-                    <li class="nav-item">
-                        <a
-                            class="nav-link {{ currentRoute == 'app_client_index' ? 'active' : '' }}"
-                            href="{{ path('app_client_index') }}"
-                            {% if currentRoute == 'app_client_index' %}aria-current="page"{% endif %}
-                        >Kunden</a>
-                    </li>
-                </ul>
+                <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a
+                                class="nav-link {{ currentRoute == 'app_main_index' ? 'active' : '' }}"
+                                href="{{ path('app_main_index') }}"
+                                {% if currentRoute == 'app_main_index' %}aria-current="page"{% endif %}
+                            >Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                class="nav-link {{ currentRoute == 'app_campaign_index' ? 'active' : '' }}"
+                                href="{{ path('app_campaign_index') }}"
+                                {% if currentRoute == 'app_campaign_index' %}aria-current="page"{% endif %}
+                            >Kampagnen</a>
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                class="nav-link {{ currentRoute == 'app_campaigns_archived' ? 'active' : '' }}"
+                                href="{{ path('app_campaigns_archived') }}"
+                                {% if currentRoute == 'app_campaigns_archived' %}aria-current="page"{% endif %}
+                            >Archivierte Kampagnen</a>
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                class="nav-link {{ currentRoute == 'app_client_index' ? 'active' : '' }}"
+                                href="{{ path('app_client_index') }}"
+                                {% if currentRoute == 'app_client_index' %}aria-current="page"{% endif %}
+                            >Kunden</a>
+                        </li>
+                    </ul>
 
-                {% if is_granted("ROLE_USER") %}
-                    <a class="btn btn-outline-primary mt-2 mt-lg-0" href="{{ path('app_logout') }}">Logout</a>
-                {% else %}
-                    <a class="btn btn-outline-primary mt-2 mt-lg-0" href="{{ path('app_login') }}">Login</a>
-                {% endif %}
+                    {% if is_granted("ROLE_USER") %}
+                        <a class="btn btn-outline-primary mt-2 mt-lg-0" href="{{ path('app_logout') }}">Logout</a>
+                    {% else %}
+                        <a class="btn btn-outline-primary mt-2 mt-lg-0" href="{{ path('app_login') }}">Login</a>
+                    {% endif %}
+                </div>
+
             </div>
-
-        </div>
-    </nav>
+        </nav>
+    {% endif %}
 
 </header>
 
@@ -78,6 +80,7 @@
 </main>
 
 <footer></footer>
+
 </body>
 
 </html>
