@@ -67,6 +67,9 @@ final class CampaignController extends AbstractController
     #[Route('/{id}/edit', name: 'app_campaign_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Campaign $campaign, EntityManagerInterface $entityManager): Response
     {
+        // Only project manager and campaign owner of campaign can edit campaign
+        $this->denyAccessUnlessGranted('CAMPAIGN_EDIT', $campaign);
+
         $form = $this->createForm(CampaignType::class, $campaign);
         $form->handleRequest($request);
 
@@ -110,6 +113,9 @@ final class CampaignController extends AbstractController
     #[Route('/{id}', name: 'app_campaign_delete', methods: ['POST'])]
     public function delete(Request $request, Campaign $campaign, EntityManagerInterface $entityManager): Response
     {
+        // Only project manager and campaign owner of campaign can delete campaign
+        $this->denyAccessUnlessGranted('CAMPAIGN_DELETE', $campaign);
+
         if ($this->isCsrfTokenValid('delete' . $campaign->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($campaign);
             $entityManager->flush();

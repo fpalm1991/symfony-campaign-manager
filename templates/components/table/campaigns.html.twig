@@ -45,7 +45,10 @@
                 <td>{{ campaign.endDate ? campaign.endDate|date('d. F Y') : '' }}</td>
                 <td>
                     <a href="{{ path('app_campaign_show', {'id': campaign.id}) }}">Mehr</a>
-                    <a href="{{ path('app_campaign_edit', {'id': campaign.id}) }}">Bearbeiten</a>
+
+                    {% if is_granted('CAMPAIGN_EDIT', campaign) %}
+                        <a href="{{ path('app_campaign_edit', {'id': campaign.id}) }}">Bearbeiten</a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}
