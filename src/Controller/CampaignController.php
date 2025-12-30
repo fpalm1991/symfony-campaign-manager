@@ -92,6 +92,9 @@ final class CampaignController extends AbstractController
         EntityManagerInterface $entityManager,
     ): JsonResponse
     {
+        // Only project manager and campaign owner of campaign can archive campaign
+        $this->denyAccessUnlessGranted('CAMPAIGN_EDIT', $campaign);
+
         if (!$this->isCsrfTokenValid('lifecycle' . $campaign->getId(), $request->getPayload()->getString('_token'))) {
             return $this->json(['ok' => false, 'error' => 'Invalid CSRF Token.'], Response::HTTP_FORBIDDEN);
         }

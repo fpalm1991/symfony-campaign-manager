@@ -27,15 +27,16 @@
                 <td>{{ numberCampaigns }} {{ numberCampaigns == 1 ? 'Kampagne' : 'Kampagnen' }}</td>
 
                 <td>
+                    <a href="{{ path('app_client_show', {'id': client.id}) }}">Mehr</a>
+
                     {% if is_granted('ROLE_ADMIN') %}
-                        <a href="{{ path('app_client_show', {'id': client.id}) }}">Mehr</a>
+                        <a href="{{ path('app_client_edit', {'id': client.id}) }}">Bearbeiten</a>
                     {% endif %}
-                    <a href="{{ path('app_client_edit', {'id': client.id}) }}">Bearbeiten</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="4">Keine erfassten Kunden.</td>
+                <td colspan="5">Keine erfassten Kunden.</td>
             </tr>
         {% endfor %}
         </tbody>

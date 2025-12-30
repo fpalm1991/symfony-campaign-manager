@@ -62,16 +62,16 @@
             </div>
 
         {% else %}
-
             <p>Keine Kampagnen gefunden.</p>
-            
         {% endfor %}
-
     </div>
 
     <div class="btn-group">
         <a class="btn btn-outline-primary" href="{{ path('app_client_index') }}">Zurück</a>
-        <a class="btn btn-outline-primary" href="{{ path('app_client_edit', {'id': client.id}) }}">Bearbeiten</a>
+
+        {% if is_granted('ROLE_ADMIN') %}
+            <a class="btn btn-outline-primary" href="{{ path('app_client_edit', {'id': client.id}) }}">Bearbeiten</a>
+        {% endif %}
     </div>
 
 {% endblock %}

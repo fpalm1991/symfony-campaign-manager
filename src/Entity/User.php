@@ -45,6 +45,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Campaign::class, mappedBy: 'campaign_owner', orphanRemoval: true)]
     private Collection $campaign_owner_campaigns;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $full_name = null;
+
     public function __construct()
     {
         $this->project_manager_campaigns = new ArrayCollection();
@@ -75,7 +78,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -120,8 +123,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function __serialize(): array
     {
-        $data = (array) $this;
-        $data["\0".self::class."\0password"] = hash('crc32c', $this->password);
+        $data = (array)$this;
+        $data["\0" . self::class . "\0password"] = hash('crc32c', $this->password);
 
         return $data;
     }
@@ -186,7 +189,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function __toString(): string {
+    public function __toString(): string
+    {
         return $this->email;
+    }
+
+    public function getFullName(): ?string
+    {
+        return $this->full_name;
+    }
+
+    public function setFullName(?string $full_name): static
+    {
+        $this->full_name = $full_name;
+
+        return $this;
+    }
+
+    public function greeting(): string
+    {
+        return 'Hallo ' . ($this->full_name ? $this->full_name : $this->email) . ' 🚀';
     }
 }
