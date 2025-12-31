@@ -46,6 +46,15 @@ class Campaign
     #[ORM\Column(enumType: CampaignLifecycle::class)]
     private CampaignLifecycle $lifecycle;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $description = null;
+
+    #[ORM\ManyToOne]
+    private ?User $description_last_edited_by = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $description_updated_at = null;
+
     public function __construct()
     {
         $this->setLifecycle(CampaignLifecycle::ACTIVE);
@@ -189,5 +198,41 @@ class Campaign
         }
 
         return CampaignStatus::ENDED;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getDescriptionLastEditedBy(): ?User
+    {
+        return $this->description_last_edited_by;
+    }
+
+    public function setDescriptionLastEditedBy(?User $description_last_edited_by): static
+    {
+        $this->description_last_edited_by = $description_last_edited_by;
+
+        return $this;
+    }
+
+    public function getDescriptionUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->description_updated_at;
+    }
+
+    public function setDescriptionUpdatedAt(?\DateTimeImmutable $description_updated_at): static
+    {
+        $this->description_updated_at = $description_updated_at;
+
+        return $this;
     }
 }

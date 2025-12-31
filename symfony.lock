@@ -207,5 +207,8 @@
             "package.json",
             "webpack.config.js"
         ]
+    },
+    "twig/extra-bundle": {
+        "version": "v3.22.2"
     }
 }

@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Campaign;
+use App\Entity\User;
 use App\Enum\CampaignLifecycle;
 use App\Form\CampaignType;
 use App\Repository\CampaignRepository;
+use App\Service\MarkdownRenderer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -57,10 +59,13 @@ final class CampaignController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_campaign_show', methods: ['GET'])]
-    public function show(Campaign $campaign): Response
+    public function show(Campaign $campaign, MarkdownRenderer $converter): Response
     {
+        $campaignDescriptionHTML = (string)$converter->toHtml($campaign->getDescription() ?? '');
+
         return $this->render('campaign/show.html.twig', [
             'campaign' => $campaign,
+            'descriptionHTML' => $campaignDescriptionHTML,
         ]);
     }
 
@@ -85,7 +90,45 @@ final class CampaignController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/lifecycle', name: 'app_campaign_toggle_lifecycle')]
+    #[Route('/{id}/description', name: 'app_campaign_description_update', methods: ['POST'])]
+    public function updateCampaignDescription(
+        Request                $request,
+        Campaign               $campaign,
+        EntityManagerInterface $entityManager,
+        MarkdownRenderer       $converter
+    ): JsonResponse
+    {
+        // Only project manager and campaign owner of campaign can edit campaign description
+        $this->denyAccessUnlessGranted('CAMPAIGN_EDIT', $campaign);
+
+        if (!$this->isCsrfTokenValid('description' . $campaign->getId(), $request->getPayload()->getString('_token'))) {
+            return $this->json(['ok' => false, 'error' => 'Invalid CSRF Token.'], Response::HTTP_FORBIDDEN);
+        }
+
+        /** @var User $user */
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->json(['ok' => false, 'error' => 'Not authenticated.'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        $descriptionMarkdown = $request->request->getString('campaign-description');
+
+        $campaign->setDescription($descriptionMarkdown);
+        $campaign->setDescriptionLastEditedBy($user);
+        $campaign->setDescriptionUpdatedAt(new \DateTimeImmutable("now"));
+
+        $entityManager->flush();
+
+        return $this->json(
+            [
+                'ok' => true,
+                'description_html' => (string)$converter->toHtml($descriptionMarkdown),
+                'description_markdown' => $descriptionMarkdown,
+            ],
+            Response::HTTP_OK);
+    }
+
+    #[Route('/{id}/lifecycle', name: 'app_campaign_toggle_lifecycle', methods: ['POST'])]
     public function toggleCampaignLifecycle(
         Request                $request,
         Campaign               $campaign,

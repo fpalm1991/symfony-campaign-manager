@@ -36,7 +36,7 @@
         {% endif %}
     </div>
 
-    <table class="table mb-4">
+    <table class="table mb-5">
         <tbody>
         <tr>
             <th>Kampagne</th>
@@ -81,12 +81,106 @@
         </tbody>
     </table>
 
+    <div class="mb-5" id="campaign-description-container">
+        <div class="card shadow-sm">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span class="fw-semibold text-muted">Notizen</span>
+
+                {% if is_granted('CAMPAIGN_EDIT', campaign) %}
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-outline-primary"
+                        id="button-show-edit-campaign-description-form"
+                    >
+                        Bearbeiten
+                    </button>
+                {% endif %}
+
+            </div>
+
+            <div class="card-body">
+                <div
+                    id="area-show-campaign-description"
+                    class="campaign-description-content"
+                >
+                    {% if descriptionHTML is empty %}
+                        Keine Notizen vorhanden.
+                    {% else %}
+                        {{ descriptionHTML|raw }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form
+        class="d-none mb-5"
+        id="form-edit-campaign-description"
+        action="{{ path('app_campaign_description_update', { id: campaign.id }) }}"
+        method="post"
+    >
+        <input type="hidden" name="_token" value="{{ csrf_token('description' ~ campaign.id) }}">
+
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <span class="fw-semibold">Notizen bearbeiten</span>
+            </div>
+
+            <div class="card-body">
+                <div class="mb-3">
+                <textarea
+                    name="campaign-description"
+                    class="form-control"
+                    id="textarea-edit-campaign-description"
+                    rows="8"
+                    placeholder="Hier können Notizen zur Kampagne ergänzt werden…"
+                >{{ campaign.description }}</textarea>
+                </div>
+
+                {# --- Helper / Markdown hints --- #}
+                <div class="alert alert-light border small mb-4">
+                    <div class="fw-semibold mb-2 text-muted">Formatierung</div>
+                    <ul class="mb-0 ps-3">
+                        <li>
+                            Link einfügen:
+                            <code>[DuckDuckGo](https://duckduckgo.com)</code>
+                        </li>
+                    </ul>
+                </div>
+
+                {# --- Metadata --- #}
+                {% if campaign.descriptionUpdatedAt is not null %}
+                    <div class="text-muted small mb-4">
+                        Zuletzt bearbeitet
+                        {% if campaign.descriptionLastEditedBy is not null %}
+                            von <strong>{{ campaign.descriptionLastEditedBy.email }}</strong>
+                        {% endif %}
+                        am {{ campaign.descriptionUpdatedAt|date('d.m.Y H:i') }}
+                    </div>
+                {% endif %}
+
+                {# --- Actions --- #}
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">Speichern</button>
+
+                    <button
+                        type="button"
+                        class="btn btn-outline-secondary"
+                        id="button-cancel-edit-campaign-description"
+                    >
+                        Abbrechen
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+
     <div class="btn-group">
         <a class="btn btn-outline-primary" href="{{ path('app_campaign_index') }}">Zurück</a>
 
         {% if is_granted('CAMPAIGN_EDIT', campaign) %}
             <a class="btn btn-outline-primary"
-               href="{{ path('app_campaign_edit', {'id': campaign.id}) }}">Bearbeiten</a>
+               href="{{ path('app_campaign_edit', {'id': campaign.id}) }}">Kampagne bearbeiten</a>
         {% endif %}
     </div>
 
