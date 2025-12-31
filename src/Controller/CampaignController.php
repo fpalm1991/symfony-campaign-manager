@@ -144,7 +144,7 @@ final class CampaignController extends AbstractController
 
         // 1 => archive current campaign
         // 0 => activate current campaign
-        $archiveCampaign = (int)$request->request->get('archive_campaign') === 1;
+        $archiveCampaign = (int)$request->request->get('archive_campaign', 0) === 1;
         $campaign->setLifecycle($archiveCampaign ? CampaignLifecycle::ARCHIVED : CampaignLifecycle::ACTIVE);
         $entityManager->flush();
 

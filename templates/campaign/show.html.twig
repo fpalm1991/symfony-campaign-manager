@@ -26,7 +26,6 @@
                         class="form-check-input"
                         type="checkbox"
                         role="switch"
-                        value="{{ campaign.lifecycle.asValue }}"
                         id="toggle-switch-lifecycle" {{ campaign.lifecycle.asValue == '1' ? 'checked' : '' }}>
                     <label class="form-check-label" for="toggle-switch-lifecycle" id="toggle-switch-lifecycle-lable">
                         {{ campaign.lifecycle.asValue == '1' ? 'Archivieren' : 'Aktivieren' }}

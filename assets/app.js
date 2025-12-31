@@ -5,11 +5,10 @@ import './styles/app.css'
 const updateCampaignLifecycle = (form, toggle, toggleLabel, badge) => {
     if (!form || !toggle || !toggleLabel || !badge) return
 
-    toggle.addEventListener('change', async (e) => {
-        e.preventDefault()
+    toggle.addEventListener('change', async () => {
 
-        const archiveCampaign = toggle.value
-        console.log(`${+archiveCampaign === 1 ? 'Archiving' : 'Activating'} campaign.`)
+        // const archiveCampaign = toggle.value
+        const archiveCampaign = toggle.checked ? '0' : '1'
 
         const formData = new FormData(form)
         formData.set('archive_campaign', archiveCampaign)
@@ -32,14 +31,12 @@ const updateCampaignLifecycle = (form, toggle, toggleLabel, badge) => {
                 badge.classList = ''
                 badge.classList = 'badge bg-secondary'
 
-                toggle.value = '0'
                 toggleLabel.textContent = 'Aktivieren'
             } else {
-                badge.textContent = 'Aktiviert'
+                badge.textContent = 'Aktiv'
                 badge.classList = ''
                 badge.classList = 'badge bg-success'
 
-                toggle.value = '1'
                 toggleLabel.textContent = 'Archivieren'
             }
         } catch (e) {
