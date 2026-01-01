@@ -97,7 +97,19 @@ const updateCampaignDescription = (form, container, areaShow, buttonShowForm) =>
             alert('Could not update description. ' + e.message)
         }
     })
+}
 
+const filterCampaigns = (formData) => {
+    if (!formData.form) return
+
+    const form = formData.form
+
+    // Add form submit event to each select input field
+    for (const select of formData.selects) {
+        select.select.addEventListener('change', () => {
+            form.submit()
+        })
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -117,4 +129,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const buttonShowEditCampaignDescriptionForm = document.getElementById('button-show-edit-campaign-description-form')
 
     updateCampaignDescription(formEditCampaignDescription, campaignDescriptionContainer, areaShowCampaignDescription, buttonShowEditCampaignDescriptionForm)
+
+    // Film filter campaigns
+    const formDataFilterCampaigns = {
+        form: document.getElementById('form-campaign-table-filters'),
+        selects: [
+            {select: document.getElementById('select-client')},
+            {select: document.getElementById('select-platform')},
+            {select: document.getElementById('select-project-manager')},
+            {select: document.getElementById('select-campaign-owner')},
+        ],
+    }
+
+    filterCampaigns(formDataFilterCampaigns)
 })

@@ -7,6 +7,9 @@ use App\Entity\User;
 use App\Enum\CampaignLifecycle;
 use App\Form\CampaignType;
 use App\Repository\CampaignRepository;
+use App\Repository\ClientRepository;
+use App\Repository\PlatformRepository;
+use App\Repository\UserRepository;
 use App\Service\MarkdownRenderer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,11 +22,42 @@ use Symfony\Component\Routing\Attribute\Route;
 final class CampaignController extends AbstractController
 {
     #[Route(name: 'app_campaign_index', methods: ['GET'])]
-    public function index(CampaignRepository $campaignRepository): Response
+    public function index(
+        Request            $request,
+        CampaignRepository $campaignRepository,
+        UserRepository     $userRepository,
+        ClientRepository   $clientRepository,
+        PlatformRepository $platformRepository
+    ): Response
     {
+        $selectedClient = $request->query->getInt('client', 0);
+        $selectedPlatform = $request->query->getInt('platform', 0);
+        $selectedProjectManager = $request->query->getInt('project-manager', 0);
+        $selectedCampaignOwner = $request->query->getInt('campaign-owner', 0);
+
+        $campaigns = $campaignRepository->filterCampaignsBy($selectedClient, $selectedPlatform, $selectedProjectManager, $selectedCampaignOwner);
+
+        $projectManagers = $userRepository->findByRole('ROLE_PROJECT_MANAGER');
+        $campaignOwners = $userRepository->findByRole('ROLE_CAMPAIGN_OWNER');
+        $clients = $clientRepository->findAll();
+        $platforms = $platformRepository->findAll();
+
         return $this->render('campaign/index.html.twig', [
             'heading' => 'Aktive Kampagnen',
-            'campaigns' => $campaignRepository->findAllActiveCampaigns(),
+            'campaigns' => $campaigns,
+            'showSelectFilters' => true,
+
+            // Option values for select input fields
+            'projectManagers' => $projectManagers,
+            'campaignOwners' => $campaignOwners,
+            'clients' => $clients,
+            'platforms' => $platforms,
+
+            // Selected values by user
+            'selectedClient' => $selectedClient,
+            'selectedPlatform' => $selectedPlatform,
+            'selectedProjectManager' => $selectedProjectManager,
+            'selectedCampaignOwner' => $selectedCampaignOwner,
         ]);
     }
 

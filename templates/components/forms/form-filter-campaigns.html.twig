@@ -1,0 +1,93 @@
+<form
+    class="d-flex gap-2 mb-4"
+    id="form-campaign-table-filters"
+    action="{{ path('app_campaign_index') }}"
+    method="get">
+
+    <select
+        class="form-select"
+        aria-label="Select Client"
+        name="client"
+        id="select-client"
+    >
+        <option value="0"
+            {{ selectedClient == 0 ? 'selected' : '' }}
+        >
+            Alle Kunden
+        </option>
+        {% for client in clients %}
+            <option
+                value="{{ client.id }}"
+                {{ selectedClient == client.id ? 'selected' : '' }}
+            >
+                {{ client.name }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <select
+        class="form-select"
+        aria-label="Select Platform"
+        name="platform"
+        id="select-platform"
+    >
+        <option
+            value="0"
+            {{ selectedPlatform == 0 ? 'selected' : '' }}
+        >
+            Alle Plattformen
+        </option>
+        {% for platform in platforms %}
+            <option
+                value="{{ platform.id }}"
+                {{ selectedPlatform == platform.id ? 'selected' : '' }}
+            >
+                {{ platform.name }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <select
+        class="form-select"
+        aria-label="Select Project Manager"
+        name="project-manager"
+        id="select-project-manager"
+    >
+        <option
+            value="0"
+            {{ selectedProjectManager == 0 ? 'selected' : '' }}
+        >Alle PL
+        </option>
+        {% for projectManager in projectManagers %}
+            <option
+                value="{{ projectManager.id }}"
+                {{ selectedProjectManager == projectManager.id ? 'selected' : '' }}
+            >
+                {{ projectManager.email }}
+            </option>
+        {% endfor %}
+
+    </select>
+
+    <select
+        class="form-select"
+        aria-label="Select Campaign Owner"
+        name="campaign-owner"
+        id="select-campaign-owner"
+    >
+        <option
+            value="0"
+            {{ selectedCampaignOwner == 0 ? 'selected' : '' }}
+        >Alle Owner
+        </option>
+        {% for campaignOwner in campaignOwners %}
+            <option
+                value="{{ campaignOwner.id }}"
+                {{ selectedCampaignOwner == campaignOwner.id ? 'selected' : '' }}
+            >
+                {{ campaignOwner.email }}
+            </option>
+        {% endfor %}
+    </select>
+
+</form>

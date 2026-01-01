@@ -8,6 +8,8 @@
 
     {{ include('components/table/campaigns.html.twig', { 'campaigns': campaigns }) }}
 
-    <a class="btn btn-primary" href="{{ path('app_campaign_new') }}">Neue Kampagne</a>
+    {% if app.request.attributes.get("_route") == 'app_campaign_index' %}
+        <a class="btn btn-primary" href="{{ path('app_campaign_new') }}">Neue Kampagne</a>
+    {% endif %}
 
 {% endblock %}

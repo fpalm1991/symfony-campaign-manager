@@ -1,5 +1,11 @@
 <div class="table-responsive mb-5">
 
+    {% if showSelectFilters ?? false %}
+
+        {{ include('components/forms/form-filter-campaigns.html.twig') }}
+
+    {% endif %}
+
     <table class="table table-campaigns">
 
         <thead>

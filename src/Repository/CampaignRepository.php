@@ -65,6 +65,41 @@ class CampaignRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function filterCampaignsBy(int $clientId, int $platformId, int $projectManagerId, int $campaignOwnerId, string $lifecycle = 'active'): array
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        $qb
+            ->andWhere('c.lifecycle = :lifecycle')
+            ->setParameter('lifecycle', $lifecycle);
+
+        if ($clientId > 0) {
+            $qb
+                ->andWhere('IDENTITY(c.client) = :client')
+                ->setParameter('client', $clientId);
+        }
+
+        if ($platformId > 0) {
+            $qb
+                ->andWhere('IDENTITY(c.platform) = :platform')
+                ->setParameter('platform', $platformId);
+        }
+
+        if ($projectManagerId > 0) {
+            $qb
+                ->andWhere('IDENTITY(c.project_manager) = :projectManager')
+                ->setParameter('projectManager', $projectManagerId);
+        }
+
+        if ($campaignOwnerId > 0) {
+            $qb
+                ->andWhere('IDENTITY(c.campaign_owner) = :campaignOwner')
+                ->setParameter('campaignOwner', $campaignOwnerId);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
     //    /**
     //     * @return Campaign[] Returns an array of Campaign objects
     //     */
