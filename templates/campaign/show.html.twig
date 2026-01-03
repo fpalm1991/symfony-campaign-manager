@@ -10,8 +10,12 @@
             <span
                 id="campaign-lifecycle-badge"
                 class="badge {{ campaign.lifecycle.badgeClass }}">{{ campaign.lifecycle.asLabel|capitalize }}</span>
+
+            {% if campaign.lifeCycle is not same as (enum('App\\Enum\\CampaignLifecycle').ARCHIVED) %}    
             <span
+                id="campaign-status-badge"
                 class="badge {{ campaign.status.badgeClass }}">{{ campaign.status.value }}</span>
+            {% endif %}
         </div>
 
         {% if is_granted('CAMPAIGN_EDIT', campaign) %}

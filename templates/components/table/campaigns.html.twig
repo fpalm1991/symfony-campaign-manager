@@ -27,11 +27,17 @@
             <tr>
                 <td>{{ campaign.id }}</td>
                 <td>{{ campaign.name }}</td>
-                <td class="td__campaign-status-icon">
-                    <div class="td-inner">
-                        <span class="campaign-status-icon {{ campaign.status.badgeClass }}"></span>
-                    </div>
-                </td>
+
+                {% if campaign.lifeCycle is not same as (enum('App\\Enum\\CampaignLifecycle').ARCHIVED) %}
+                    <td class="td__campaign-status-icon">
+                        <div class="td-inner">
+                            <span class="campaign-status-icon {{ campaign.status.badgeClass }}"></span>
+                        </div>
+                    </td>
+                {% else %}
+                    <td class="text-center">Archiviert</td>
+                {% endif %}
+
                 <td class="td__platform-icon">
                     <div class="td-inner">
                         <img
@@ -50,10 +56,10 @@
                 <td>{{ campaign.startDate ? campaign.startDate|date('d. F Y') : '' }}</td>
                 <td>{{ campaign.endDate ? campaign.endDate|date('d. F Y') : '' }}</td>
                 <td>
-                    <a href="{{ path('app_campaign_show', {'id': campaign.id}) }}">Mehr</a>
+                    <a class="btn btn-primary d-inline" href="{{ path('app_campaign_show', {'id': campaign.id}) }}">Mehr</a>
 
                     {% if is_granted('CAMPAIGN_EDIT', campaign) %}
-                        <a href="{{ path('app_campaign_edit', {'id': campaign.id}) }}">Bearbeiten</a>
+                        <a class="btn btn-outline-primary d-inline" href="{{ path('app_campaign_edit', {'id': campaign.id}) }}">Bearbeiten</a>
                     {% endif %}
                 </td>
             </tr>

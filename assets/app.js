@@ -2,7 +2,7 @@ import './packages/bootstrap/bootstrap.min.css'
 import './packages/bootstrap/bootstrap.bundle.min'
 import './styles/app.css'
 
-const updateCampaignLifecycle = (form, toggle, toggleLabel, badge) => {
+const updateCampaignLifecycle = (form, toggle, toggleLabel, badge, badgeStatus) => {
     if (!form || !toggle || !toggleLabel || !badge) return
 
     toggle.addEventListener('change', async () => {
@@ -31,11 +31,19 @@ const updateCampaignLifecycle = (form, toggle, toggleLabel, badge) => {
                 badge.classList = ''
                 badge.classList = 'badge bg-secondary'
 
+                if (badgeStatus) {
+                    badgeStatus.classList.add('d-none')
+                }
+
                 toggleLabel.textContent = 'Aktivieren'
             } else {
                 badge.textContent = 'Aktiv'
                 badge.classList = ''
                 badge.classList = 'badge bg-success'
+
+                if (badgeStatus) {
+                    badgeStatus.classList.remove('d-none')
+                }
 
                 toggleLabel.textContent = 'Archivieren'
             }
@@ -115,12 +123,13 @@ const filterCampaigns = (formData) => {
 document.addEventListener('DOMContentLoaded', () => {
 
     // Form update campaign lifecycle
-    const formCampaignLifecycle = document.getElementById('form-campaign-lifecycle');
-    const toggleCampaignLifecycle = document.getElementById('toggle-switch-lifecycle');
-    const toggleCampaignLifecycleLabel = document.getElementById('toggle-switch-lifecycle-lable');
+    const formCampaignLifecycle = document.getElementById('form-campaign-lifecycle')
+    const toggleCampaignLifecycle = document.getElementById('toggle-switch-lifecycle')
+    const toggleCampaignLifecycleLabel = document.getElementById('toggle-switch-lifecycle-lable')
     const campaignLifecycleBadge = document.getElementById('campaign-lifecycle-badge')
+    const campaignStatusBadge = document.getElementById('campaign-status-badge')
 
-    updateCampaignLifecycle(formCampaignLifecycle, toggleCampaignLifecycle, toggleCampaignLifecycleLabel, campaignLifecycleBadge)
+    updateCampaignLifecycle(formCampaignLifecycle, toggleCampaignLifecycle, toggleCampaignLifecycleLabel, campaignLifecycleBadge, campaignStatusBadge)
 
     // Form update campaign description
     const campaignDescriptionContainer = document.getElementById('campaign-description-container')
